@@ -33,3 +33,13 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+/*
+|--------------------------------------------------------------------------
+| Set Data
+|--------------------------------------------------------------------------
+*/
+
+Route::group(['middleware' => 'auth:sanctum'], function() {
+    Route::post('/co-ordinate', [CoOrdinateController::class, 'store']);
+});
