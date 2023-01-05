@@ -63,6 +63,10 @@ class AuthController extends Controller
         return $this->responseHelper->payload(['message' => 'Wrong email or password'], 401);
     }
 
-        return response()->json($response);
+    public function logout()
+    {
+        auth()->user()->tokens()->delete();
+
+        return $this->responseHelper->payload(['message' => 'Logged out successfully!']);
     }
 }
