@@ -2,18 +2,28 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    protected $responseHelper;
+
+    public function __construct()
+    {
+        $this->responseHelper = new ResponseHelper();
+    }
+
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
             'c_password' => 'required|same:password'
@@ -21,28 +31,18 @@ class AuthController extends Controller
 
         if($validator->fails())
         {
-            $response = [
-                'success' => false,
-                'message' => $validator->errors()
-            ];
-
-            return response()->json($response, 400);
+            return $this->responseHelper->error(false, $validator->errors(), 401);
         }
 
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
+        User::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'is_user' => 1
+        ]);
 
-        $success['token'] = $user->createToken('MyApp')->plainTextToken;
-        $success['name'] = $user->name;
-
-        $response = [
-            'success' => true,
-            'data' => $success,
-            'message' => 'User Registration Successful'
-        ];
-
-        return response()->json($response, 200);
+        return $this->responseHelper->payload(['message' => 'Registered Successfully!']);
     }
 
     public function login(Request $request)
@@ -50,22 +50,18 @@ class AuthController extends Controller
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password]))
         {
             $user = Auth::user();
-            $success['token'] = $user->createToken('MyApp')->plainTextToken;
-            $success['name'] = $user->name;
 
             $response = [
-                'success' => true,
-                'data' => $success,
+                'token' => $user->createToken('MyApp')->plainTextToken,
+                'name' => $user->full_name,
                 'message' => 'Authorized'
             ];
 
-            return response()->json($response, 200);
+            return $this->responseHelper->payload($response);
         }
 
-        $response = [
-            'success' => false,
-            'message' => 'Unauthorized'
-        ];
+        return $this->responseHelper->payload(['message' => 'Wrong email or password'], 401);
+    }
 
         return response()->json($response);
     }
