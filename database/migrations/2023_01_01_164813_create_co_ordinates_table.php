@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('id');
 
             $table->integer('user_id', false, true)->nullable(false);
-            $table->foreign('user_id', 'coordinates_user_id_foreign')->references('id')->on('users');
+            $table->foreign('user_id', 'co_ordinates_user_id_foreign')->references('id')->on('users');
 
             $table->float('x')->default(null);
 
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('coordinates');
+        Schema::dropIfExists('co_ordinates');
     }
 };
