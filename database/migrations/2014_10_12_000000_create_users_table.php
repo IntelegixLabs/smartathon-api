@@ -36,7 +36,9 @@ return new class extends Migration
 
             $table->rememberToken();
 
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 
