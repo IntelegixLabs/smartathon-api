@@ -58,4 +58,9 @@ class User extends Authenticatable
             return 'user';
         }
     }
+
+    public function getWalletBalanceAttribute()
+    {
+        return Wallet::whereUserId($this->id)->first()->amount;
+    }
 }
