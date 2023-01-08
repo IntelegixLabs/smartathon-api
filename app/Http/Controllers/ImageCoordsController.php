@@ -43,6 +43,12 @@ class ImageCoordsController extends Controller
         return $this->responseHelper->success();
     }
 
+    public function showAdmin()
+    {
+        $images = ImageCoords::all();
+
+        return new ImageCoordsCollection($images);
+    }
     public function showUser()
     {
         $images = ImageCoords::whereUserId(auth()->user()->id)->get();

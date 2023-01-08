@@ -53,6 +53,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/image', [ImageCoordsController::class, 'store'])->middleware(['auth:sanctum', 'user']);
 Route::get('/image', [ImageCoordsController::class, 'showUser'])->middleware(['auth:sanctum', 'user']);
+Route::get('/admin/image', [ImageCoordsController::class, 'showAdmin'])->middleware(['auth:sanctum', 'admin']);
 
 /*
 | Fallback
