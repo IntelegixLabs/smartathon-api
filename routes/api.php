@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\ImageCoordsController;
 use App\Http\Controllers\Misc\CoOrdinateController;
+use App\Models\ImageCoords;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,9 +41,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 |--------------------------------------------------------------------------
 */
 
-Route::group(['middleware' => ['auth:sanctum', 'user']], function() {
-    Route::post('/co-ordinate', [CoOrdinateController::class, 'store']);
-});
+// Route::group(['middleware' => ['auth:sanctum', 'user']], function() {
+//     Route::post('/co-ordinate', [CoOrdinateController::class, 'store']);
+// });
+
+/*
+|-------------------------------------------------------------------------
+| Image Co-ordinates Storing/Retrieving
+|-------------------------------------------------------------------------
+*/
+
+Route::post('/image', [ImageCoordsController::class, 'store'])->middleware(['auth:sanctum', 'user']);
 
 /*
 | Fallback
