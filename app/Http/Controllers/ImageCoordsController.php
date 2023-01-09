@@ -49,10 +49,33 @@ class ImageCoordsController extends Controller
 
         return new ImageCoordsCollection($images);
     }
+
     public function showUser()
     {
         $images = ImageCoords::whereUserId(auth()->user()->id)->get();
 
         return new ImageCoordsCollection($images);
+    }
+
+    public function update(Request $request)
+    {
+        if (!$request->file('image')) {
+            return $this->responseHelper->payload(['error' => 'Invalid Image'], 401);
+        }
+
+        $unfixedImage = ImageCoords::where('id', $request->image_id)->first();
+
+        $imageExtension = $request->image->getClientOriginalExtension();
+        $imageName =  'fixed_' . $unfixedImage->unfixed_image . '.' . $imageExtension;
+
+        $request->file('image')->storeAs('uploads', $imageName, 'public');
+
+        ImageCoords::where('id', $request->image_id)->update([
+            'is_fixed' => 1,
+            'fixed_image' => $imageName,
+            'admin_id' => auth()->user()->id
+        ]);
+
+        return $this->responseHelper->success();
     }
 }
