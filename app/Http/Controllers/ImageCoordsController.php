@@ -103,4 +103,13 @@ class ImageCoordsController extends Controller
             'updated_at' => $imageCoords->updated_at
         ]);
     }
+
+    public function showAllImageCoords(Request $request)
+    {
+        $pollution_id = $request->pollution_id;
+
+        $pollution = ImageCoords::where('pollution_id', $pollution_id)->get();
+
+        return new ImageCoordsCollection($pollution);
+    }
 }
