@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ImageCoordsController;
 use App\Http\Controllers\Misc\CoOrdinateController;
+use App\Http\Controllers\PollutionController;
 use App\Models\ImageCoords;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::get('/auth/user', [AuthController::class, 'showUser'])->middleware('auth:sanctum');
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +47,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     Route::post('/co-ordinate', [CoOrdinateController::class, 'store']);
 // });
 
+Route::group(['middleware' => ['auth:sanctum', 'admin']], function() {
+    Route::get('/admin/pollutions', [PollutionController::class, 'index']);
+    Route::get('/admin/pollutions/{pollution_id}', [PollutionController::class, 'showPollution']);
+    Route::get('/admin/pollutions/all', [PollutionController::class, 'showAllPollutions']);
+
+    Route::post('/admin/image_coords', [ImageCoordsController::class, 'showAllImageCoords']);
+    Route::get('/admin/image_coords/{image_id}', [ImageCoordsController::class, 'showImageCoords']);
+    Route::get('/admin/image_coords/{image_id}/unfix', [ImageCoordsController::class, 'unfixImageCoords']);
+});
 /*
 |-------------------------------------------------------------------------
 | Image Co-ordinates Storing/Retrieving
