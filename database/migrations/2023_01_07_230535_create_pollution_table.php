@@ -20,6 +20,8 @@ return new class extends Migration
 
             $table->string('type', 255)->nullable()->default(null);
 
+            $table->string('image_name')->nullable()->default(null);
+
             $table->timestamp('created_at')->useCurrent();
 
             $table->timestamp('updated_at')->useCurrent();
