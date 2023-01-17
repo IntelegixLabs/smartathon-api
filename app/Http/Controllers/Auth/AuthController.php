@@ -53,7 +53,9 @@ class AuthController extends Controller
 
             $response = [
                 'token' => $user->createToken('MyApp')->plainTextToken,
-                'name' => $user->full_name,
+                'first_name' => $user->first_name,
+                'last_name' => $user->last_name,
+                'email' => $user->email,
                 'message' => 'Authorized'
             ];
 
@@ -61,6 +63,18 @@ class AuthController extends Controller
         }
 
         return $this->responseHelper->payload(['message' => 'Wrong email or password'], 401);
+    }
+
+
+    public function showUser()
+    {
+        $response = [
+            'first_name' => auth()->user()->first_name,
+            'last_name' => auth()->user()->last_name,
+            'email' => auth()->user()->email
+        ];
+
+        return $this->responseHelper->payload($response);
     }
 
     public function logout()
