@@ -23,7 +23,7 @@ class ImageCoordsController extends Controller
         }
 
         $imageExtension = $request->image->getClientOriginalExtension();
-        $imageName = 'image_' . time() . '.' . $imageExtension;
+        $imageName = 'image_' . time();
 
         $request->file('image')->storeAs('uploads', $imageName, 'public');
 
@@ -66,7 +66,7 @@ class ImageCoordsController extends Controller
         $unfixedImage = ImageCoords::where('id', $request->image_id)->first();
 
         $imageExtension = $request->image->getClientOriginalExtension();
-        $imageName =  'fixed_' . $unfixedImage->unfixed_image . '.' . $imageExtension;
+        $imageName =  'fixed_' . $unfixedImage->unfixed_image;
 
         $request->file('image')->storeAs('uploads', $imageName, 'public');
 
