@@ -6,6 +6,7 @@ use App\Helpers\ResponseHelper;
 use App\Http\Resources\ImageCoordsCollection;
 use App\Models\ImageCoords;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ImageCoordsController extends Controller
 {
@@ -111,5 +112,22 @@ class ImageCoordsController extends Controller
         $pollution = ImageCoords::where('pollution_id', $pollution_id)->get();
 
         return new ImageCoordsCollection($pollution);
+    }
+
+    public function unfixImageCoords($image_id)
+    {
+        $imageCoordsId = $image_id;
+
+        $imageCoords = ImageCoords::where('id', $imageCoordsId);
+
+        Storage::delete('public/uploads/' . $imageCoords->first()->fixed_image);
+
+        $imageCoords->update([
+            'is_fixed' => 0,
+            'fixed_image' => null,
+            'admin_id' => null
+        ]);
+
+        return $this->responseHelper->success();
     }
 }
