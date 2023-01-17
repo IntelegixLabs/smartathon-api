@@ -78,4 +78,29 @@ class ImageCoordsController extends Controller
 
         return $this->responseHelper->success();
     }
+
+    public function showImageCoords($image_id)
+    {
+        $imageCoordsId = $image_id;
+
+        $imageCoords = ImageCoords::where('id', $imageCoordsId)->first();
+
+        return $this->responseHelper->payload([
+            'id' => $imageCoords->id,
+            'user_name' => $imageCoords->user->full_name,
+            'latitude' => $imageCoords->latitude,
+            'longitude' => $imageCoords->longitude,
+            'unfixed_image' => $imageCoords->unfixed_image,
+            'x' => $imageCoords->x,
+            'y' => $imageCoords->y,
+            'w' => $imageCoords->w,
+            'z' => $imageCoords->z,
+            'pollution_id' => $imageCoords->pollution_id,
+            'type' => $imageCoords->pollution->type,
+            'is_fixed' => $imageCoords->is_fixed,
+            'fixed_image' => $imageCoords->fixed_image,
+            'created_at' => $imageCoords->created_at,
+            'updated_at' => $imageCoords->updated_at
+        ]);
+    }
 }
