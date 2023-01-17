@@ -24,4 +24,14 @@ class ImageCoords extends Model
         'fixed_image',
         'admin_id'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function pollution()
+    {
+        return $this->belongsTo('App\Models\Pollution');
+    }
 }
