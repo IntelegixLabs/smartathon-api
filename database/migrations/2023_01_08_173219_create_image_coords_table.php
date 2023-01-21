@@ -19,19 +19,19 @@ return new class extends Migration
             $table->integer('user_id', false, true)->nullable(false);
             $table->foreign('user_id', 'image_coords_user_id_foreign')->references('id')->on('users')->onDelete('cascade');
 
-            $table->double('latitude', 14, 8)->nullable()->default(null);
+            $table->double('latitude', 14, 10)->nullable()->default(null);
 
-            $table->double('longitude', 14, 8)->nullable()->default(null);
+            $table->double('longitude', 14, 10)->nullable()->default(null);
 
             $table->string('unfixed_image', 255)->nullable()->default(null);
 
-            $table->double('w', 14, 8)->nullable()->default(null);
+            $table->double('w', 14, 10)->nullable()->default(null);
 
-            $table->double('x', 14, 8)->nullable()->default(null);
+            $table->double('x', 14, 10)->nullable()->default(null);
 
-            $table->double('y', 14, 8)->nullable()->default(null);
+            $table->double('y', 14, 10)->nullable()->default(null);
 
-            $table->double('z', 14, 8)->nullable()->default(null);
+            $table->double('z', 14, 10)->nullable()->default(null);
 
             $table->integer('pollution_id', false, true)->nullable(false);
             $table->foreign('pollution_id')->references('id')->on('pollutions')->onDelete('cascade');
