@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PollutionSeeder::class,
             UserSeeder::class,
-            // ImageCoordsSeeder::class
+            ImageCoordsSeeder::class
         ]);
     }
 }
